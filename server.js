@@ -369,7 +369,6 @@ var s3 = new AWS.S3({
 });
 
 app.get('/api/getSignedRequest', function(req, res) {
-    //console.log(req, res);
     const fileName = req.query['file-name'];
     const fileType = req.query['file-type'];
     const s3Params = {
@@ -440,7 +439,6 @@ app.post('/api/uploadImageFromBingSearch', function(req, res) {
     };
 
     download(_uri, _filename, () => {
-        console.log('done');
         fs.readFile(_filename, (err, fileData) => {
             let params = {
                 ACL: 'public-read',
