@@ -1,0 +1,56 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            Bosch Chatbot
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button (click)="logout()">
+                <ion-icon name="log-out"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+    <ion-fab bottom right>
+        <button ion-fab color="danger" (click)="startListening();">
+            <ion-icon name="mic"></ion-icon>
+        </button>
+    </ion-fab>
+
+    <ion-list no-lines class="chat-list">
+        <ion-item *ngFor="let message of messages" class="chat-item" text-wrap>
+            <ion-avatar item-left *ngIf="message.sender == 'api'">
+                <img src="assets/apiai.png" alt="">
+            </ion-avatar>
+            <ion-avatar item-right *ngIf="message.sender == 'me'">
+                <img [src]="user?.avatar ? user?.avatar : 'assets/images/default-profile-picture.png'" alt="{{user._id}}">
+            </ion-avatar>
+            <div *ngIf="message.sender == 'api'" class="bubble me">
+                <h3> {{ message.text }} </h3>
+            </div>
+            <div *ngIf="message.sender == 'me'" class="bubble you">
+                <h3> {{ message.text }} </h3>
+                <img *ngIf="message.resolvedUrl && isImageType(message.resolvedUrl)" src={{message.resolvedUrl}} />
+                <video *ngIf="message.resolvedUrl && !isImageType(message.resolvedUrl)" width="320" heigth="240" controls>
+                    <source src={{message.resolvedUrl}} type="video/mp4"/>
+                </video>
+            </div>
+        </ion-item>
+
+    </ion-list>
+
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-item>
+            <ion-input #input type="text" placeholder="Your message here.." [(ngModel)]="text">
+            </ion-input>
+            <button ion-button icon-only item-right clear (click)="sendText(false); input.setFocus()">
+            <ion-icon name="send"></ion-icon>
+          </button>
+        </ion-item>
+    </ion-toolbar>
+</ion-footer>
